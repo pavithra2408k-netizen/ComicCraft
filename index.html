@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ComicCraft - AI Comic Story Creator</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f3ff;
+            color: #222;
+        }
+
+        header {
+            background: #6c4cff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 32px;
+        }
+
+        header p {
+            margin-top: 8px;
+            font-size: 16px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            color: #6c4cff;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            resize: none;
+            font-size: 16px;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #6c4cff;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 13px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #6c4cff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5135d8;
+        }
+
+        .comic-area {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .panel {
+            border: 3px solid #222;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            background: #fff;
+        }
+
+        .panel h3 {
+            margin-bottom: 10px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎨 ComicCraft</h1>
+        <p>AI Comic Story Creator using Gemini Models</p>
+    </header>
+
+    <div class="container">
+
+        <div class="card">
+            <h2>Create Your Comic</h2>
+
+            <label for="storyIdea">Enter your story idea:</label>
+
+            <textarea
+                id="storyIdea"
+                placeholder="Example: A student discovers a magical book in college...">
+            </textarea>
+
+            <button onclick="createComic()">
+                ✨ Generate Comic
+            </button>
+
+            <div class="comic-area" id="comicArea">
+
+                <h2>Your Comic Story</h2>
+
+                <div class="panel">
+                    <h3>Panel 1</h3>
+                    <p id="panel1">
+                        Your AI-generated story will appear here.
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <h3>Panel 2</h3>
+                    <p id="panel2">
+                        Your AI-generated story will appear here.
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <h3>Panel 3</h3>
+                    <p id="panel3">
+                        Your AI-generated story will appear here.
+                    </p>
+                </div>
+
+                <div class="panel">
+                    <h3>Panel 4</h3>
+                    <p id="panel4">
+                        Your AI-generated story will appear here.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>© 2026 ComicCraft | Powered by Gemini AI</p>
+    </footer>
+
+    <script>
+        function createComic() {
+
+            const idea = document.getElementById("storyIdea").value.trim();
+
+            if (idea === "") {
+                alert("Please enter a story idea!");
+                return;
+            }
+
+            document.getElementById("comicArea").style.display = "block";
+
+            document.getElementById("panel1").innerText =
+                "Story idea: " + idea;
+
+            document.getElementById("panel2").innerText =
+                "The main character begins the adventure based on your idea.";
+
+            document.getElementById("panel3").innerText =
+                "An exciting event happens and changes the direction of the story.";
+
+            document.getElementById("panel4").innerText =
+                "The adventure reaches its ending. Gemini AI will generate the complete story here.";
+        }
+    </script>
+
+</body>
+</html>
