@@ -204,27 +204,25 @@ async function createComic() {
             backendURL + "?idea=" + encodeURIComponent(idea)
         );
 
-        const data = await response.json();
+        const story = await response.text();
 
-        if (data.error) {
-            throw new Error(data.error);
+        if (story.startsWith("ERROR:")) {
+            throw new Error(story);
         }
-
-        const story = data.story;
 
         const panels = story.split(/PANEL\s*[1-4]\s*:/i);
 
         document.getElementById("panel1").innerText =
-            panels[1] ? panels[1].trim() : "";
+            panels[1] ? panels[1].trim() : "No content";
 
         document.getElementById("panel2").innerText =
-            panels[2] ? panels[2].trim() : "";
+            panels[2] ? panels[2].trim() : "No content";
 
         document.getElementById("panel3").innerText =
-            panels[3] ? panels[3].trim() : "";
+            panels[3] ? panels[3].trim() : "No content";
 
         document.getElementById("panel4").innerText =
-            panels[4] ? panels[4].trim() : "";
+            panels[4] ? panels[4].trim() : "No content";
 
     } catch (error) {
 
