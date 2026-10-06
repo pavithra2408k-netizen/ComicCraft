@@ -210,19 +210,43 @@ async function createComic() {
             throw new Error(story);
         }
 
-        const panels = story.split(/PANEL\s*[1-4]\s*:/i);
+        // Try to detect different panel formats
+        const panels = story.split(
+            /(?:\*\*)?\s*PANEL\s*[1-4]\s*(?:\*\*)?\s*:?\s*/i
+        );
 
-        document.getElementById("panel1").innerText =
-            panels[1] ? panels[1].trim() : "No content";
+        if (panels.length >= 5) {
 
-        document.getElementById("panel2").innerText =
-            panels[2] ? panels[2].trim() : "No content";
+            document.getElementById("panel1").innerText =
+                panels[1].trim();
 
-        document.getElementById("panel3").innerText =
-            panels[3] ? panels[3].trim() : "No content";
+            document.getElementById("panel2").innerText =
+                panels[2].trim();
 
-        document.getElementById("panel4").innerText =
-            panels[4] ? panels[4].trim() : "No content";
+            document.getElementById("panel3").innerText =
+                panels[3].trim();
+
+            document.getElementById("panel4").innerText =
+                panels[4].trim();
+
+        } else {
+
+            // If Gemini gives a different format,
+            // show the complete response instead of "No content"
+
+            document.getElementById("panel1").innerText =
+                story.trim();
+
+            document.getElementById("panel2").innerText =
+                "AI generated the story successfully.";
+
+            document.getElementById("panel3").innerText =
+                "Try generating another comic for a new story.";
+
+            document.getElementById("panel4").innerText =
+                "✨ ComicCraft powered by Gemini AI";
+
+        }
 
     } catch (error) {
 
