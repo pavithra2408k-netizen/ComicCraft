@@ -178,32 +178,69 @@
     <footer>
         <p>© 2026 ComicCraft | Powered by Gemini AI</p>
     </footer>
+<script>
+async function createComic() {
 
-    <script>
-        function createComic() {
+    const idea = document.getElementById("storyIdea").value.trim();
 
-            const idea = document.getElementById("storyIdea").value.trim();
+    if (idea === "") {
+        alert("Please enter a story idea!");
+        return;
+    }
 
-            if (idea === "") {
-                alert("Please enter a story idea!");
-                return;
-            }
+    document.getElementById("comicArea").style.display = "block";
 
-            document.getElementById("comicArea").style.display = "block";
+    document.getElementById("panel1").innerText = "✨ Generating...";
+    document.getElementById("panel2").innerText = "Please wait...";
+    document.getElementById("panel3").innerText = "";
+    document.getElementById("panel4").innerText = "";
 
-            document.getElementById("panel1").innerText =
-                "Story idea: " + idea;
+    const backendURL =
+        "https://script.google.com/macros/s/AKfycbzCFJKzMjekPF0RBrhCqLLti4TxMVTEYzLRh0jvixHpKKEJAZmtF8tZ7jmhb9uN-Ij68g/exec";
 
-            document.getElementById("panel2").innerText =
-                "The main character begins the adventure based on your idea.";
+    try {
 
-            document.getElementById("panel3").innerText =
-                "An exciting event happens and changes the direction of the story.";
+        const response = await fetch(
+            backendURL + "?idea=" + encodeURIComponent(idea)
+        );
 
-            document.getElementById("panel4").innerText =
-                "The adventure reaches its ending. Gemini AI will generate the complete story here.";
+        const data = await response.json();
+
+        if (data.error) {
+            throw new Error(data.error);
         }
-    </script>
 
+        const story = data.story;
+
+        const panels = story.split(/PANEL\s*[1-4]\s*:/i);
+
+        document.getElementById("panel1").innerText =
+            panels[1] ? panels[1].trim() : "";
+
+        document.getElementById("panel2").innerText =
+            panels[2] ? panels[2].trim() : "";
+
+        document.getElementById("panel3").innerText =
+            panels[3] ? panels[3].trim() : "";
+
+        document.getElementById("panel4").innerText =
+            panels[4] ? panels[4].trim() : "";
+
+    } catch (error) {
+
+        console.error(error);
+
+        document.getElementById("panel1").innerText =
+            "❌ Error generating comic.";
+
+        document.getElementById("panel2").innerText =
+            error.message;
+
+        document.getElementById("panel3").innerText = "";
+        document.getElementById("panel4").innerText = "";
+    }
+}
+</script>
+    
 </body>
 </html>
