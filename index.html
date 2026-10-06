@@ -104,6 +104,12 @@
 
         .panel h3 {
             margin-bottom: 10px;
+            color: #6c4cff;
+        }
+
+        .panel p {
+            line-height: 1.6;
+            white-space: pre-line;
         }
 
         footer {
@@ -125,14 +131,14 @@
     <div class="container">
 
         <div class="card">
+
             <h2>Create Your Comic</h2>
 
             <label for="storyIdea">Enter your story idea:</label>
 
             <textarea
                 id="storyIdea"
-                placeholder="Example: A student discovers a magical book in college...">
-            </textarea>
+                placeholder="Example: A student discovers a magical book in college..."></textarea>
 
             <button onclick="createComic()">
                 ✨ Generate Comic
@@ -171,6 +177,7 @@
                 </div>
 
             </div>
+
         </div>
 
     </div>
@@ -178,91 +185,124 @@
     <footer>
         <p>© 2026 ComicCraft | Powered by Gemini AI</p>
     </footer>
-<script>
-async function createComic() {
 
-    const idea = document.getElementById("storyIdea").value.trim();
 
-    if (idea === "") {
-        alert("Please enter a story idea!");
-        return;
-    }
+    <script>
 
-    document.getElementById("comicArea").style.display = "block";
+        async function createComic() {
 
-    document.getElementById("panel1").innerText = "✨ Generating...";
-    document.getElementById("panel2").innerText = "Please wait...";
-    document.getElementById("panel3").innerText = "";
-    document.getElementById("panel4").innerText = "";
+            const idea = document
+                .getElementById("storyIdea")
+                .value
+                .trim();
 
-    const backendURL =
-        "https://script.google.com/macros/s/AKfycbzCFJKzMjekPF0RBrhCqLLti4TxMVTEYzLRh0jvixHpKKEJAZmtF8tZ7jmhb9uN-Ij68g/exec";
+            if (idea === "") {
+                alert("Please enter a story idea!");
+                return;
+            }
 
-    try {
-
-        const response = await fetch(
-            backendURL + "?idea=" + encodeURIComponent(idea)
-        );
-
-        const story = await response.text();
-
-        if (story.startsWith("ERROR:")) {
-            throw new Error(story);
-        }
-
-        // Try to detect different panel formats
-        const panels = story.split(
-            /(?:\*\*)?\s*PANEL\s*[1-4]\s*(?:\*\*)?\s*:?\s*/i
-        );
-
-        if (panels.length >= 5) {
+            document.getElementById("comicArea").style.display = "block";
 
             document.getElementById("panel1").innerText =
-                panels[1].trim();
+                "✨ Generating...";
 
             document.getElementById("panel2").innerText =
-                panels[2].trim();
+                "Please wait...";
 
-            document.getElementById("panel3").innerText =
-                panels[3].trim();
+            document.getElementById("panel3").innerText = "";
 
-            document.getElementById("panel4").innerText =
-                panels[4].trim();
+            document.getElementById("panel4").innerText = "";
 
-        } else {
 
-            // If Gemini gives a different format,
-            // show the complete response instead of "No content"
+            const backendURL =
+                "https://script.google.com/macros/s/AKfycbzCFJKzMjekPF0RBrhCqLLti4TxMVTEYzLRh0jvixHpKKEJAZmtF8tZ7jmhb9uN-Ij68g/exec";
 
-            document.getElementById("panel1").innerText =
-                story.trim();
 
-            document.getElementById("panel2").innerText =
-                "AI generated the story successfully.";
+            try {
 
-            document.getElementById("panel3").innerText =
-                "Try generating another comic for a new story.";
+                const response = await fetch(
+                    backendURL + "?idea=" + encodeURIComponent(idea)
+                );
 
-            document.getElementById("panel4").innerText =
-                "✨ ComicCraft powered by Gemini AI";
+
+                const story = await response.text();
+
+
+                console.log("Gemini Response:", story);
+
+
+                if (story.startsWith("ERROR:")) {
+                    throw new Error(story);
+                }
+
+
+                const panel1 = story.match(
+                    /PANEL 1:\s*([\s\S]*?)(?=PANEL 2:|$)/i
+                );
+
+
+                const panel2 = story.match(
+                    /PANEL 2:\s*([\s\S]*?)(?=PANEL 3:|$)/i
+                );
+
+
+                const panel3 = story.match(
+                    /PANEL 3:\s*([\s\S]*?)(?=PANEL 4:|$)/i
+                );
+
+
+                const panel4 = story.match(
+                    /PANEL 4:\s*([\s\S]*)/i
+                );
+
+
+                document.getElementById("panel1").innerText =
+                    panel1
+                    ? panel1[1].trim()
+                    : "Panel 1 not generated.";
+
+
+                document.getElementById("panel2").innerText =
+                    panel2
+                    ? panel2[1].trim()
+                    : "Panel 2 not generated.";
+
+
+                document.getElementById("panel3").innerText =
+                    panel3
+                    ? panel3[1].trim()
+                    : "Panel 3 not generated.";
+
+
+                document.getElementById("panel4").innerText =
+                    panel4
+                    ? panel4[1].trim()
+                    : "Panel 4 not generated.";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+
+                document.getElementById("panel1").innerText =
+                    "❌ Error generating comic.";
+
+
+                document.getElementById("panel2").innerText =
+                    error.message;
+
+
+                document.getElementById("panel3").innerText = "";
+
+
+                document.getElementById("panel4").innerText = "";
+
+            }
 
         }
 
-    } catch (error) {
+    </script>
 
-        console.error(error);
-
-        document.getElementById("panel1").innerText =
-            "❌ Error generating comic.";
-
-        document.getElementById("panel2").innerText =
-            error.message;
-
-        document.getElementById("panel3").innerText = "";
-        document.getElementById("panel4").innerText = "";
-    }
-}
-</script>
-    
 </body>
 </html>
